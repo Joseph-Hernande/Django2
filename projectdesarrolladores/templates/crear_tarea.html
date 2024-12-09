@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Tarea{% endblock %}
+
+{% block content %}
+    {% if request.session.logueado.rol == 'L' %}
+        <h1>Crear Tarea</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Selección del Proyecto -->
+            <div class="mb-3">
+                <label for="proyecto" class="form-label">Proyecto</label>
+                <select id="proyecto" name="proyecto" class="form-select" required>
+                    <option value="">Selecciona un proyecto</option>
+                    {% for proyecto in proyectos %}
+                        <option value="{{ proyecto.id }}">{{ proyecto.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Selección del Equipo -->
+            <div class="mb-3">
+                <label for="equipo" class="form-label">Equipo</label>
+                <select id="equipo" name="equipo" class="form-select" required>
+                    <option value="">Selecciona un proyecto primero</option> <!-- Mensaje inicial -->
+                </select>
+            </div>
+            
+            <!-- Título de la tarea -->
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" name="titulo" class="form-control" required>
+            </div>
+            
+            <!-- Descripción de la tarea -->
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea name="descripcion" class="form-control" required></textarea>
+            </div>
+            
+            <!-- Fecha de vencimiento -->
+            <div class="mb-3">
+                <label for="fecha_limite" class="form-label">Fecha de vencimiento</label>
+                <input type="date" name="fecha_limite" class="form-control" required>
+            </div>
+            
+            <!-- Prioridad -->
+            <div class="mb-3">
+                <label for="prioridad" class="form-label">Prioridad</label>
+                <select name="prioridad" class="form-select" required>
+                    <option value="1">Alta</option>
+                    <option value="2">Media</option>
+                    <option value="3">Baja</option>
+                </select>
+            </div>
+            
+            <!-- Asignado a -->
+            <div class="mb-3">
+                <label for="asignado_a" class="form-label">Asignado a</label>
+                <select id="asignado_a" name="asignado_a" class="form-select">
+                    <option value="0">Aún no asignado</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Crear Tarea</button>
+        </form>
+
+        <script>
+            // JavaScript para actualizar los equipos y miembros de acuerdo al proyecto seleccionado
+            document.getElementById('proyecto').addEventListener('change', function() {
+                let proyectoId = this.value;
+                if (proyectoId) {
+                    fetch(`/equipos-de-proyecto/${proyectoId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let equipoSelect = document.getElementById('equipo');
+                        equipoSelect.innerHTML = '<option value="">Selecciona un equipo</option>';
+                        data.equipos.forEach(function(equipo) {
+                            equipoSelect.innerHTML += `<option value="${equipo.id}">${equipo.nombre}</option>`;
+                        });
+                    });
+                }
+            });
+        
+            // JavaScript para actualizar los miembros del equipo
+            document.getElementById('equipo').addEventListener('change', function() {
+                let equipoId = this.value;
+                if (equipoId) {
+                    fetch(`/miembros-de-equipo/${equipoId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let asignadoSelect = document.getElementById('asignado_a');
+                        asignadoSelect.innerHTML = '<option value="0">Aún no asignado</option>';
+                        data.miembros.forEach(function(miembro) {
+                            asignadoSelect.innerHTML += `<option value="${miembro.id}">${miembro.nombre}</option>`;
+                        });
+                    });
+                }
+            });
+        </script>        
+    {% else %}
+        <p>No tienes permisos para crear tareas.</p>
+    {% endif %}
+{% endblock %}

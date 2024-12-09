@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Asignar Líderes{% endblock %}
+
+{% block content %}
+    {% if request.session.logueado.rol != 'A' %}
+        <h2>No tienes permiso para acceder a esta página.</h2>
+        <p>Solo los administradores pueden asignar líderes.</p>
+        <a href="{% url 'index' %}" class="btn btn-primary">Volver al inicio</a>
+    {% else %}
+        <h1>Asignar Líder a Proyecto</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="proyecto" class="form-label">Proyecto</label>
+                <select name="proyecto" class="form-select" required>
+                    {% for proyecto in proyectos %}
+                        <option value="{{ proyecto.id }}">{{ proyecto.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="lider" class="form-label">Líder</label>
+                <select name="lider" class="form-select" required>
+                    {% for lider in lideres %}
+                        <option value="{{ lider.id }}">{{ lider.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Asignar Líder</button>
+        </form>
+    {% endif %}
+{% endblock %}

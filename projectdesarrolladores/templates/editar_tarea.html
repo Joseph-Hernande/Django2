@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Tarea{% endblock %}
+
+{% block content %}
+    <h1>Editar Tarea</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" name="titulo" class="form-control" value="{{ tarea.titulo }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea name="descripcion" class="form-control" required>{{ tarea.descripcion }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="fecha_limite" class="form-label">Fecha Límite</label>
+            <input type="date" name="fecha_limite" id="fecha_limite" class="form-control" required>
+        </div>        
+        <div class="mb-3">
+            <label for="prioridad" class="form-label">Prioridad</label>
+            <select name="prioridad" class="form-select" required>
+                <option value="1" {% if tarea.prioridad == 1 %}selected{% endif %}>Alta</option>
+                <option value="2" {% if tarea.prioridad == 2 %}selected{% endif %}>Media</option>
+                <option value="3" {% if tarea.prioridad == 3 %}selected{% endif %}>Baja</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select name="estado" class="form-select" required>
+                <option value="P" {% if tarea.estado == 'P' %}selected{% endif %}>Pendiente</option>
+                <option value="C" {% if tarea.estado == 'C' %}selected{% endif %}>Completada</option>
+                <option value="A" {% if tarea.estado == 'A' %}selected{% endif %}>Asignada</option>
+                <option value="E" {% if tarea.estado == 'E' %}selected{% endif %}>En Progreso</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+{% endblock %}

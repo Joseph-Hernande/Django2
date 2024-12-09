@@ -1,0 +1,61 @@
+python --version => Version de python
+
+pip install Django => Instalar Django
+
+python -m django --version => Ver la version del Django
+
+pip list => Ver listado de paquetes que tenemos 
+
+django-admin startproyect NAME => crear un proyecto en django
+
+C:\Users\Estudiantes\AppData\Local\Programs\Python\Python312\python.exe C:\Users\Estudiantes\AppData\Local\Programs\Python\Python312\Script\django-admin.exe startproject ucc
+=> Esta es la forma forsoza de crear un proyecto
+
+PS E:\Universidad\6. Sexto Semestre\Electiva III\proyectos_django> cd .\myproject\ => Entrar al proyecto
+
+ls => Ver Archivos
+
+asgi y wsgi puente entre el software con la pagina y la db
+
+ROOT_URLCONF = 'myproject.urls' => Archivo principal de ruteo
+
+python manage.py runserver => Correr el proyecto (Starting development server at http://127.0.0.1:8000/ Esta es la ruta del proyecto)
+
+ctr + c para cerrar el proyecto
+
+python .\manage.py startapp biblioteca => crear una nueva aplicación dentro de un proyecto Django.
+
+Django maneja => Modelo por plantillas
+
+---settings
+LANGUAGE_CODE = 'es'
+TIME_ZONE = 'America/Bogota'
+
+--Para meter las nuevas apps que se cree 
+INSTALLED_APPS = [
+    'biblioteca',
+]
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path("", ) =>sirve para dejar esta como principal
+    path("login/", ) =>Este es para tener una ruta
+]
+
+
+power shell es mejor que el cmd al momento de comandos
+
+...../admin/ => Cuestionaro predefinido 
+python manage.py makemigrations biblioteca => Nuestro primer modelo (base de datos){capa de datos},,, preprara el modelo para la base de datos
+    Esto genera un pseudosql en migrations
+
+
+python .\manage.py migrate     => Sirve para migrar el modelo para la base de datos
+
+Si se hacen cambios en los modelos genera conflicto, se toca borrar las migraciones y todo desde el comienzo
+
+python manage.py createsuperuser => Crear un usuario admin
+    name = admin
+    mail = josephjafir12@gmail.com
+    password = 12345

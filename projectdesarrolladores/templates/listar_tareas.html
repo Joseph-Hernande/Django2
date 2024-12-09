@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Tareas{% endblock %}
+
+{% block content %}
+    <h1>Lista de Tareas</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Equipo</th>
+                <th>Observaciones</th>
+                <th>Asignado a</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Fecha Limite</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tarea in tareas %}
+                <tr>
+                    <td>{{ tarea.titulo }}</td>
+                    <td>{{ tarea.descripcion }}</td>
+                    <td>{{ tarea.equipo.nombre }}</td>
+                    <td>{{ tarea.observaciones }}</td>
+                    <td>
+                        {% if tarea.asignado_a %}
+                            {{ tarea.asignado_a.nombre }}
+                        {% else %}
+                            No asignado
+                        {% endif %}
+                    </td>
+                    <td>{{ tarea.get_prioridad_display }}</td>
+                    <td>{{ tarea.get_estado_display }}</td>
+                    <td>{{ tarea.fecha_limite|date:"d/m/Y" }}</td>
+                    <td>
+                        <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-warning">Editar</a>
+                        {% if not tarea.asignado_a %}
+                            <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-danger">Eliminar</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+{% endblock %}

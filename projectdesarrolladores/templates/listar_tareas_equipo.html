@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Listado de Tareas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título de la Tarea</th>
+            <th>Descripción</th>
+            <th>Observaciones</th>
+            <th>Estado</th>
+            <th>Asignado a</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in tareas %}
+        <tr>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="tarea_id" value="{{ tarea.id }}">
+                <td>{{ tarea.titulo }}</td>
+                <td>{{ tarea.descripcion }}</td>
+                <td>{{ tarea.observaciones }}</td>
+                <td>{{ tarea.get_estado_display }}</td>
+                <td>
+                    {% if tarea.asignado_a %}
+                        {{ tarea.asignado_a.nombre }}
+                    {% else %}
+                        No asignado
+                    {% endif %}
+                </td>
+            </form>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No hay tareas disponibles.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Equipo{% endblock %}
+
+{% block content %}
+    {% if request.session.logueado.rol == 'L' %}
+        <h1>Crear Equipo</h1>
+        <p>Puedes crear un equipo solo para el proyecto: <strong>{{ proyecto_asignado.nombre }}</strong></p>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Selección del Proyecto -->
+            <div class="mb-3">
+                <label for="proyecto" class="form-label">Proyecto</label>
+                <select name="proyecto" class="form-select" required>
+                    <option value="{{ proyecto_asignado.id }}" selected>{{ proyecto_asignado.nombre }}</option>
+                </select>
+            </div>
+            
+            <!-- Nombre del Equipo -->
+            <div class="mb-3">
+                <label for="nombre_equipo" class="form-label">Nombre del Equipo</label>
+                <input type="text" class="form-control" name="nombre_equipo" required>
+            </div>
+
+            <!-- Selección de Miembros (solo desarrolladores) -->
+            <div id="miembros-container" class="mb-3">
+                <label for="miembros" class="form-label">Miembros</label>
+                <select name="miembros" class="form-select" multiple required>
+                    {% for miembro in miembros %}
+                        <option value="{{ miembro.id }}">{{ miembro.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Crear Equipo</button>
+        </form>
+    {% else %}
+        <p>No tienes permisos para crear equipos.</p>
+    {% endif %}
+{% endblock %}

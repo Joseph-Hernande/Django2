@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Ver Equipo{% endblock %}
+
+{% block content %}
+    {% if equipo %}
+        <h1>Detalles del Equipo: {{ equipo.nombre }}</h1>
+        <p><strong>Proyecto:</strong> {{ equipo.proyecto.nombre }}</p>
+        
+        <h3>Miembros del Equipo:</h3>
+        <ul>
+            {% for miembro in equipo.miembros.all %}
+                <li>{{ miembro.nombre }}</li>
+            {% empty %}
+                <li>No hay miembros asignados a este equipo.</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se ha encontrado el equipo.</p>
+    {% endif %}
+{% endblock %}

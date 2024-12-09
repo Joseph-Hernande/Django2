@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block content %}
+    {% if request.session.logueado.rol == 'A' %}
+        <h1>Lista de Usuarios</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.nombre }}</td>
+                        <td>{{ usuario.correo }}</td>
+                        <td>{{ usuario.get_rol_display }}</td>
+                        <td>
+                            <!-- Botón para cambiar rol -->
+                            <form action="{% url 'cambiar_rol' usuario.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning">Cambiar Rol</button>
+                            </form>
+                            <!-- Botón para eliminar usuario (excepto id=1) -->
+                            {% if usuario.id != 1 %}
+                                <form action="{% url 'eliminar_usuario' usuario.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                            {% else %}
+                                <button class="btn btn-danger" disabled>Eliminar</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tienes permisos para ver esta página.</p>
+    {% endif %}
+{% endblock %}

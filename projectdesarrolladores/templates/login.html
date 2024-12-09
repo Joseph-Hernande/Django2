@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <!-- mostrar las notificaciones -->
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% endif %}
+
+    <h1>Pagina Desarrolladores - Login</h1>
+
+    <form action="#" method="post">
+        {% csrf_token %}
+        <label>Usuario:</label>
+        <input class="form-control" type="email" name="correo"><br>
+
+        <label>Contraseña:</label>
+        <input class="form-control" type="password" name="clave"><br>
+
+        <button class="btn btn-primary" type="submit">Login</button>
+    </form>
+{% endblock %}

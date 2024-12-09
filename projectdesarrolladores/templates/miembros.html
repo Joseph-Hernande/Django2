@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Miembros{% endblock %}
+
+{% block content %}
+    <h1>Miembros de los Equipos</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Equipo</th>
+                <th>Miembros</th>
+                {% if request.session.logueado.rol == 'L' %}
+                    <th>Acciones</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipo in equipos %}
+                <tr>
+                    <td>{{ equipo.nombre }}</td>
+                    <td>
+                        {% for miembro in equipo.miembros.all %}
+                            {{ miembro.nombre }}<br>
+                        {% endfor %}
+                    </td>
+                    {% if request.session.logueado.rol == 'L' %}
+                        <td>
+                            <a href="{% url 'asignar_miembro' equipo.id %}" class="btn btn-primary">Asignar Miembro</a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

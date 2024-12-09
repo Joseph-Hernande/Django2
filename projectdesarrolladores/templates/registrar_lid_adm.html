@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Usuarios{% endblock %}
+
+{% block content %}
+    {% if request.session.logueado.rol == 'A' %}
+        <h1>Registrar Usuario</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo</label>
+                <input type="email" class="form-control" name="correo" required>
+            </div>
+            <div class="mb-3">
+                <label for="clave" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" name="clave" required>
+            </div>
+            <div class="mb-3">
+                <label for="rol" class="form-label">Rol</label>
+                <select name="rol" class="form-select" required>
+                    <option value="L">Líder</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar Usuario</button>
+        </form>
+    {% else %}
+        <p>No tienes permisos para registrar usuarios.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Desarrollador{% endblock %}
+
+{% block content %}
+    {% if request.session.logueado.rol == 'L' %}
+        <h1>Registrar Desarrollador</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo</label>
+                <input type="email" class="form-control" name="correo" required>
+            </div>
+            <div class="mb-3">
+                <label for="clave" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" name="clave" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Registrar Desarrollador</button>
+        </form>
+    {% else %}
+        <p>No tienes permisos para registrar desarrolladores.</p>
+    {% endif %}
+{% endblock %}
+

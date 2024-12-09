@@ -1,0 +1,4 @@
+Admin Django:
+
+Nombre usuario: admin
+Contraseña: 12345

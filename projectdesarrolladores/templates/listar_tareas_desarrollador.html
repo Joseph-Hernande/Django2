@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Mis Tareas Asignadas</h1>
+
+{% if tareas %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Observaciones</th>
+            <th>Estado</th>
+            <th>Asignado a</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in tareas %}
+        <tr>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="tarea_id" value="{{ tarea.id }}">
+                <td>{{ tarea.titulo }}</td>
+                <td>{{ tarea.descripcion }}</td>
+                <td><textarea name="observaciones" class="form-control">{{ tarea.observaciones }}</textarea></td>
+                <td>
+                    <select name="estado" class="form-control">
+                        <option value="P" {% if tarea.estado == 'P' %}selected{% endif %}>Pendiente</option>
+                        <option value="C" {% if tarea.estado == 'C' %}selected{% endif %}>Completada</option>
+                        <option value="A" {% if tarea.estado == 'A' %}selected{% endif %}>Asignada</option>
+                        <option value="E" {% if tarea.estado == 'E' %}selected{% endif %}>En Progreso</option>
+                    </select>
+                </td>
+                <td>
+                    {% if tarea.asignado_a %}
+                        {{ tarea.asignado_a.nombre }}
+                    {% else %}
+                        No asignado
+                    {% endif %}
+                </td>
+                <td><button type="submit" class="btn btn-primary">Actualizar</button></td>
+            </form>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No tienes tareas asignadas.</p>
+{% endif %}
+{% endblock %}
